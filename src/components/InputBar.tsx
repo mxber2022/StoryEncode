@@ -80,17 +80,17 @@ const InputBar: React.FC<InputBarProps> = ({
         </div>
 
         <div className="mt-3 flex items-center justify-between text-sm text-gray-400">
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <p className="font-normal">Press Enter to send, Shift+Enter for new line</p>
             <div className="hidden sm:flex items-center space-x-2">
               <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
               <span className="font-normal">AI-powered creativity</span>
             </div>
-          </div>
-          <div className="flex items-center space-x-2">
+          </div> */}
+          {/* <div className="flex items-center space-x-2">
             <Sparkles className="w-4 h-4 text-gray-500" />
             <span className="font-normal">Powered by StoryMint AI</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

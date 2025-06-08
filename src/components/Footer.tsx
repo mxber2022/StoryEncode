@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div className="flex items-center space-x-3">
             {/* Custom S Logo */}
-            <div className="relative group">
+            {/* <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-400/20 via-gray-300/30 to-gray-500/20 rounded-lg blur-md group-hover:blur-lg transition-all duration-500"></div>
               <div className="relative bg-gradient-to-br from-gray-400 via-gray-300 to-gray-500 p-2 rounded-lg shadow-xl border border-gray-600/40 backdrop-blur-sm">
                 <div className="w-5 h-5 flex items-center justify-center">
@@ -22,12 +22,12 @@ const Footer: React.FC = () => {
                   </svg>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">
+              {/* <h3 className="text-lg font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">
                 StoryMint
-              </h3>
-              <p className="text-xs text-gray-400">AI Content & IP Platform</p>
+              </h3> */}
+              <p className="text-sm text-gray-400">Powered by StoryProtocol</p>
             </div>
           </div>
 

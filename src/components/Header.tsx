@@ -34,29 +34,28 @@ const Header: React.FC<HeaderProps> = ({ onShowHistory }) => {
   return (
     <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800/50 px-6 py-4 sticky top-0 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-3">
-          {/* Custom S Logo */}
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-400/30 via-gray-300/40 to-gray-500/30 rounded-xl blur-lg group-hover:blur-xl transition-all duration-500"></div>
-            <div className="relative bg-gradient-to-br from-gray-400 via-gray-300 to-gray-500 p-3 rounded-xl shadow-2xl border border-gray-600/50 backdrop-blur-sm">
-              <div className="w-6 h-6 flex items-center justify-center">
-                <svg 
-                  viewBox="0 0 24 24" 
-                  className="w-6 h-6 text-black font-bold"
-                  fill="currentColor"
-                >
-                  <path d="M12 2C8.5 2 6 4.5 6 8c0 1.5 0.5 2.8 1.3 3.8L6 13c-1.1 0.6-2 1.9-2 3.5C4 19.5 6.5 22 10 22h4c3.5 0 6-2.5 6-6c0-1.5-0.5-2.8-1.3-3.8L20 11c1.1-0.6 2-1.9 2-3.5C22 4.5 19.5 2 16 2h-4zm0 2h4c2.5 0 4 1.5 4 3.5c0 0.8-0.3 1.5-0.8 2L18 10.2c0.8 0.8 1.2 1.8 1.2 2.8c0 2.5-1.5 4-4 4h-4c-2.5 0-4-1.5-4-4c0-0.8 0.3-1.5 0.8-2L9 10.2C8.2 9.4 7.8 8.4 7.8 7.5C7.8 5 9.3 3.5 12 3.5z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">
-              StoryMint
-            </h1>
-            <p className="text-sm text-gray-400">AI Content & IP Platform</p>
-          </div>
-        </div>
+      <div className="flex items-center gap-3">
+  <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-400 to-mint-500">
+    <svg
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6 text-white"
+    >
+      <path
+        d="M70 30C70 20 30 20 30 40C30 60 70 60 70 80C70 90 30 90 30 70"
+        stroke="white"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+    </svg>
+  </div>
+  <div>
+    <h1 className="text-2xl font-semibold text-white">StoryMint</h1>
+    {/* <p className="text-sm text-gray-400">AI Content & IP Platform</p> */}
+  </div>
+</div>
+
 
         <div className="flex items-center space-x-4">
           <button
