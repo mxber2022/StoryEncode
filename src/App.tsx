@@ -6,10 +6,10 @@ import RegisterIPModal from './components/RegisterIPModal';
 import HistoryPanel from './components/HistoryPanel';
 import Footer from './components/Footer';
 import { ChatMessage, RegisteredIP } from './types';
-
+import { useConnectModal } from '@tomo-inc/tomo-evm-kit';
 
 function App() {
-
+  const { openConnectModal } = useConnectModal();
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -136,12 +136,6 @@ In colors unforeseen.`,
     setInputValue(`Remix this: ${message.content.substring(0, 100)}...`);
   };
 
-  const handleConnectWallet = () => {
-    // Simulate wallet connection
-    setIsWalletConnected(true);
-    setWalletAddress('0x742d35Cc6634C0532925a3b8D4C9db96590b5b8c');
-  };
-
   const handleDisconnectWallet = () => {
     setIsWalletConnected(false);
     setWalletAddress('');
@@ -203,13 +197,12 @@ In colors unforeseen.`,
   };
 
   return (
-
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
       <Header 
         onShowHistory={() => setShowHistoryPanel(true)}
         isWalletConnected={isWalletConnected}
         walletAddress={walletAddress}
-        onConnectWallet={handleConnectWallet}
+        onConnectWallet={() => openConnectModal?.()}
         onDisconnectWallet={handleDisconnectWallet}
       />
       

@@ -30,14 +30,12 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-
-<WagmiProvider config={config}>
-    <QueryClientProvider client={queryClient}>
-      <TomoEVMKitProvider>
-    <App />
-  
-  </TomoEVMKitProvider>
-      </QueryClientProvider>
+    <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          {/* <TomoEVMKitProvider> */}
+            <App />
+          {/* </TomoEVMKitProvider> */}
+        </QueryClientProvider>
     </WagmiProvider>
-    </StrictMode>
+  </StrictMode>
 );
