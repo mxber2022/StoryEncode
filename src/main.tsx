@@ -32,9 +32,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          {/* <TomoEVMKitProvider> */}
+          <TomoEVMKitProvider>
             <App />
-          {/* </TomoEVMKitProvider> */}
+          </TomoEVMKitProvider>
         </QueryClientProvider>
     </WagmiProvider>
   </StrictMode>

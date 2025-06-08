@@ -1,32 +1,34 @@
 import React, { useState } from 'react';
 import { Database, Wallet, ChevronDown, LogOut, Copy, Check } from 'lucide-react';
+import { useConnectModal } from '@tomo-inc/tomo-evm-kit';
+import { useAccount, useDisconnect } from 'wagmi';
 
 interface HeaderProps {
   onShowHistory: () => void;
-  isWalletConnected: boolean;
-  walletAddress: string;
-  onConnectWallet: () => void;
-  onDisconnectWallet: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  onShowHistory, 
-  isWalletConnected, 
-  walletAddress, 
-  onConnectWallet, 
-  onDisconnectWallet 
-}) => {
+const Header: React.FC<HeaderProps> = ({ onShowHistory }) => {
+  const { openConnectModal } = useConnectModal();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const [showWalletDropdown, setShowWalletDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletAddress);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (address) {
+      navigator.clipboard.writeText(address);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const handleDisconnect = () => {
+    disconnect();
+    setShowWalletDropdown(false);
+  };
+
+  const formatAddress = (addr: string) => {
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
   return (
@@ -67,19 +69,19 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Wallet Connection */}
           <div className="relative">
-            {isWalletConnected ? (
+            {isConnected && address ? (
               <div>
                 <button
                   onClick={() => setShowWalletDropdown(!showWalletDropdown)}
-                  className="flex items-center space-x-3 px-4 py-2 bg-gray-900/80 border border-gray-700/50 rounded-lg hover:bg-gray-800/80 transition-all duration-300 shadow-lg"
+                  className="flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-green-700 via-green-600 to-green-700 border border-green-400/50 rounded-lg hover:bg-green-800/80 transition-all duration-300 shadow-lg"
                 >
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                  <span className="text-sm font-medium text-gray-200">
-                    {formatAddress(walletAddress)}
+                  <span className="text-sm font-medium text-white">
+                    {formatAddress(address)}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                  <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full ml-2">Connected</span>
+                  <ChevronDown className="w-4 h-4 text-white" />
                 </button>
-
                 {showWalletDropdown && (
                   <div className="absolute right-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-lg shadow-2xl z-50">
                     <div className="p-4 border-b border-gray-700/50">
@@ -98,15 +100,12 @@ const Header: React.FC<HeaderProps> = ({
                         </button>
                       </div>
                       <p className="text-white font-mono text-sm mt-1 break-all">
-                        {walletAddress}
+                        {address}
                       </p>
                     </div>
                     <div className="p-2">
                       <button
-                        onClick={() => {
-                          onDisconnectWallet();
-                          setShowWalletDropdown(false);
-                        }}
+                        onClick={handleDisconnect}
                         className="w-full flex items-center space-x-2 px-3 py-2 text-red-400 hover:bg-gray-800/50 rounded-lg transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
@@ -118,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             ) : (
               <button
-               onClick={onConnectWallet}
+                onClick={() => openConnectModal?.()}
                 className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-white rounded-lg font-medium hover:from-gray-600 hover:via-gray-500 hover:to-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-gray-500/30"
               >
                 <Wallet className="w-4 h-4" />
