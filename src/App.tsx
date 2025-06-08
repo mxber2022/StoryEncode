@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { getDefaultConfig, TomoEVMKitProvider } from '@tomo-inc/tomo-evm-kit';
+import { WagmiProvider } from 'wagmi';
+import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Header from './components/Header';
 import ChatArea from './components/ChatArea';
 import InputBar from './components/InputBar';
@@ -6,6 +10,16 @@ import RegisterIPModal from './components/RegisterIPModal';
 import HistoryPanel from './components/HistoryPanel';
 import Footer from './components/Footer';
 import { ChatMessage, RegisteredIP } from './types';
+
+const config = getDefaultConfig({
+  clientId: 'XXXXXXXXXXXXXXXXXXXXXXX', // Replace with your clientId
+  appName: 'My TomoEVMKit App',
+  projectId: 'YOUR_PROJECT_ID', // Note: Every dApp that relies on WalletConnect now needs to obtain a projectId from WalletConnect Cloud.
+  chains: [mainnet, polygon, optimism, arbitrum, base],
+  ssr: true, // If your dApp uses server-side rendering (SSR)
+});
+
+const queryClient = new QueryClient();
 
 function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -199,7 +213,9 @@ In colors unforeseen.`,
     setSelectedMessageForRegistration(null);
   };
 
-  return (
+  return (<WagmiProvider config={config}>
+    <QueryClientProvider client={queryClient}>
+      <TomoEVMKitProvider>
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
       <Header 
         onShowHistory={() => setShowHistoryPanel(true)}
@@ -246,6 +262,10 @@ In colors unforeseen.`,
         />
       )}
     </div>
+
+    </TomoEVMKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 
