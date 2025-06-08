@@ -10,13 +10,25 @@ import RegisterIPModal from './components/RegisterIPModal';
 import HistoryPanel from './components/HistoryPanel';
 import Footer from './components/Footer';
 import { ChatMessage, RegisteredIP } from './types';
+import { metaMaskWallet, rainbowWallet, walletConnectWallet } from '@tomo-inc/tomo-evm-kit/wallets';
+
 
 const config = getDefaultConfig({
   clientId: 'XXXXXXXXXXXXXXXXXXXXXXX', // Replace with your clientId
   appName: 'My TomoEVMKit App',
   projectId: 'YOUR_PROJECT_ID', // Note: Every dApp that relies on WalletConnect now needs to obtain a projectId from WalletConnect Cloud.
   chains: [mainnet, polygon, optimism, arbitrum, base],
-  ssr: true, // If your dApp uses server-side rendering (SSR)
+  ssr: true, // If your dApp uses server-side rendering (SSR),
+  wallets: [
+    {
+      groupName: 'Popular',
+      wallets: [
+        metaMaskWallet, 
+        rainbowWallet, 
+        walletConnectWallet, // Add other wallets if needed
+      ],
+    },
+  ],
 });
 
 const queryClient = new QueryClient();
@@ -213,7 +225,8 @@ In colors unforeseen.`,
     setSelectedMessageForRegistration(null);
   };
 
-  return (<WagmiProvider config={config}>
+  return (
+  <WagmiProvider config={config}>
     <QueryClientProvider client={queryClient}>
       <TomoEVMKitProvider>
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
