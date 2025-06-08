@@ -1,8 +1,4 @@
-import React, { useState } from 'react';
-import { getDefaultConfig, TomoEVMKitProvider } from '@tomo-inc/tomo-evm-kit';
-import { WagmiProvider } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import Header from './components/Header';
 import ChatArea from './components/ChatArea';
 import InputBar from './components/InputBar';
@@ -10,28 +6,7 @@ import RegisterIPModal from './components/RegisterIPModal';
 import HistoryPanel from './components/HistoryPanel';
 import Footer from './components/Footer';
 import { ChatMessage, RegisteredIP } from './types';
-import { metaMaskWallet, rainbowWallet, walletConnectWallet } from '@tomo-inc/tomo-evm-kit/wallets';
 
-
-const config = getDefaultConfig({
-  clientId: 'JCcsQrrgXacmVNMQIGU3ppR9Eb7vC1Bex7hIpF79zW7smtkejNK2o96xZxvvc7mXtnK9DMkLEPQeqSPK59jRp7nH', // Replace with your clientId
-  appName: 'StoryEncode',
-  projectId: '210025460ad550f8aa621ee6a7f5e2d7', // Note: Every dApp that relies on WalletConnect now needs to obtain a projectId from WalletConnect Cloud.
-  chains: [mainnet, polygon, optimism, arbitrum, base],
-  ssr: true, // If your dApp uses server-side rendering (SSR),
-  wallets: [
-    {
-      groupName: 'Popular',
-      wallets: [
-        metaMaskWallet, 
-        rainbowWallet, 
-        walletConnectWallet, // Add other wallets if needed
-      ],
-    },
-  ],
-});
-
-const queryClient = new QueryClient();
 
 function App() {
 
@@ -228,9 +203,7 @@ In colors unforeseen.`,
   };
 
   return (
-  <WagmiProvider config={config}>
-    <QueryClientProvider client={queryClient}>
-      <TomoEVMKitProvider>
+
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
       <Header 
         onShowHistory={() => setShowHistoryPanel(true)}
@@ -277,10 +250,6 @@ In colors unforeseen.`,
         />
       )}
     </div>
-
-    </TomoEVMKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
   );
 }
 
