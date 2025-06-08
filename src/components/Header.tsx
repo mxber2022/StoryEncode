@@ -24,13 +24,21 @@ const Header: React.FC<HeaderProps> = ({
   const { openConnectModal } = useConnectModal();
   const { walletState, providers } = useTomo()
   //const address = await providers.ethereumProvider.request({ method: "eth_accounts" })?.[0]
-  console.log(providers)
+  const { connected } = useTomo();
+
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(walletAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  if(connected){
+    //console.log(walletState);
+    console.log("wallet is connected");
+  }
+  if(!connected){
+    console.log("wallet is not connected");
+  }
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
