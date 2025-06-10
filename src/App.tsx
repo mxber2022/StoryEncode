@@ -6,10 +6,22 @@ import RegisterIPModal from './components/RegisterIPModal';
 import HistoryPanel from './components/HistoryPanel';
 import Footer from './components/Footer';
 import { ChatMessage, RegisteredIP } from './types';
-import { useConnectModal } from '@tomo-inc/tomo-evm-kit';
+import { custom, useWalletClient } from 'wagmi';
+import { StoryClient, StoryConfig } from '@story-protocol/core-sdk';
+import { toHex } from 'viem';
 
 function App() {
-  const { openConnectModal } = useConnectModal();
+  const { data: wallet } = useWalletClient();
+
+  async function setupStoryClient(): Promise<StoryClient> {
+    const config: StoryConfig = {
+      wallet: wallet,
+      transport: custom(wallet!.transport),
+      chainId: "aeneid",
+    };
+    const client = StoryClient.newClient(config);
+    return client;
+  }
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -124,6 +136,7 @@ In colors unforeseen.`,
   };
 
   const handleRegisterIP = (messageId: string) => {
+    console.log('handleRegisterIP', messageId);
     const message = messages.find(msg => msg.id === messageId);
     if (message) {
       setSelectedMessageForRegistration(message);
@@ -136,12 +149,7 @@ In colors unforeseen.`,
     setInputValue(`Remix this: ${message.content.substring(0, 100)}...`);
   };
 
-  const handleDisconnectWallet = () => {
-    setIsWalletConnected(false);
-    setWalletAddress('');
-  };
-
-  const handleRegisterSubmit = (data: {
+  const handleRegisterSubmit = async (data: {
     title: string;
     description: string;
     tags: string[];
@@ -158,8 +166,6 @@ In colors unforeseen.`,
       )
     );
 
-    // Simulate registration process
-    setTimeout(() => {
       const newIP: RegisteredIP = {
         id: `story-${Date.now()}`,
         title: data.title,
@@ -173,6 +179,28 @@ In colors unforeseen.`,
       };
 
       setRegisteredIPs(prev => [...prev, newIP]);
+
+
+      /* 
+        Implemnet IP registration on chain
+      */
+        const client = await setupStoryClient();
+
+        const response = await client.ipAsset.mintAndRegisterIp({
+          spgNftContract: '0xc32A8a0FF3beDDDa58393d022aF433e78739FAbc',
+          ipMetadata: {
+            ipMetadataURI: "test-metadata-uri",
+            ipMetadataHash: toHex("test-metadata-hash", { size: 32 }),
+            nftMetadataURI: "test-nft-metadata-uri",
+            nftMetadataHash: toHex("test-nft-metadata-hash", { size: 32 }),
+          }
+        });
+        
+        console.log(
+          `Root IPA created at tx hash ${response.txHash}, IPA ID: ${response.ipId}`
+        );
+
+
 
       // Update message status to confirmed
       setMessages(prev => 
@@ -190,7 +218,6 @@ In colors unforeseen.`,
             : msg
         )
       );
-    }, 2000);
 
     setShowRegisterModal(false);
     setSelectedMessageForRegistration(null);

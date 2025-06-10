@@ -38,7 +38,7 @@ const RegisterIPModal: React.FC<RegisterIPModalProps> = ({ message, onSubmit, on
     
     // Simulate submission delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    console.log('handleSubmit', title, description, tags, license);
     onSubmit({
       title: title.trim(),
       description: description.trim(),
