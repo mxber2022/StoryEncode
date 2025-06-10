@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ChatMessage } from '../types';
 import MessageCard from './MessageCard';
 import { MessageCircle, Sparkles, Zap, ArrowRight } from 'lucide-react';
@@ -10,9 +10,18 @@ interface ChatAreaProps {
 }
 
 const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) => {
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const scrollableRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (bottomRef.current && scrollableRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
-    <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 pb-20">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="flex-1 flex flex-col min-h-0 px-6 py-6 pb-20">
+      <div ref={scrollableRef} className="flex-1 min-h-0 overflow-y-auto max-w-4xl mx-auto w-full space-y-6">
         {messages.length === 0 ? (
           <div className="text-center py-20">
             {/* Hero Section */}
@@ -22,7 +31,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
                 <MessageCircle className="w-8 h-8 text-gray-200" />
               </div>
             </div>
-            
             <div className="space-y-3 mb-10">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-100 via-white to-gray-200 bg-clip-text text-transparent tracking-tight">
                 Create. Protect. Monetize.
@@ -31,7 +39,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
                 Transform your creative ideas into protected intellectual property with AI-powered content generation and blockchain registration.
               </p>
             </div>
-            
             {/* Feature Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-10">
               <div className="group relative">
@@ -44,7 +51,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
                   <p className="text-sm text-gray-400 leading-relaxed font-normal">Create unique stories, poems, and content with advanced AI models tailored for creative expression.</p>
                 </div>
               </div>
-              
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 to-emerald-700/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative bg-gray-900/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 hover:border-green-600/50 transition-all duration-500 group-hover:transform group-hover:scale-105">
@@ -55,7 +61,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
                   <p className="text-sm text-gray-400 leading-relaxed font-normal">Register your creative works on-chain with immutable proof of ownership and creation timestamp.</p>
                 </div>
               </div>
-              
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-amber-700/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative bg-gray-900/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 hover:border-orange-600/50 transition-all duration-500 group-hover:transform group-hover:scale-105">
@@ -67,7 +72,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
                 </div>
               </div>
             </div>
-
             {/* CTA Section */}
             <div className="bg-gradient-to-r from-gray-900/50 via-gray-800/50 to-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 max-w-2xl mx-auto">
               <h3 className="text-lg font-semibold text-gray-100 mb-3">Ready to get started?</h3>
@@ -80,14 +84,17 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
             </div>
           </div>
         ) : (
-          messages.map((message) => (
-            <MessageCard
-              key={message.id}
-              message={message}
-              onRegisterIP={onRegisterIP}
-              onRemix={onRemix}
-            />
-          ))
+          <>
+            {messages.map((message) => (
+              <MessageCard
+                key={message.id}
+                message={message}
+                onRegisterIP={onRegisterIP}
+                onRemix={onRemix}
+              />
+            ))}
+            <div ref={bottomRef} />
+          </>
         )}
       </div>
     </div>

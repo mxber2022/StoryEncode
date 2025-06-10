@@ -9,6 +9,7 @@ import { ChatMessage, RegisteredIP } from './types';
 import { custom, useWalletClient } from 'wagmi';
 import { StoryClient, StoryConfig } from '@story-protocol/core-sdk';
 import { toHex } from 'viem';
+import ChatNotification from './components/ChatNotification';
 
 function App() {
   const { data: wallet } = useWalletClient();
@@ -44,6 +45,7 @@ function App() {
   const [selectedMessageForRegistration, setSelectedMessageForRegistration] = useState<ChatMessage | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [remixingFrom, setRemixingFrom] = useState<ChatMessage | null>(null);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -78,6 +80,7 @@ function App() {
         remixedFrom: remixingFrom?.id,
       };
       setMessages(prev => [...prev, aiMessage]);
+      setNotification({ message: 'AI response received', type: 'success' });
     } catch (err) {
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -88,6 +91,7 @@ function App() {
         remixedFrom: remixingFrom?.id,
       };
       setMessages(prev => [...prev, aiMessage]);
+      setNotification({ message: 'AI failed to respond', type: 'error' });
     }
   };
 
@@ -180,27 +184,27 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
+    <div className="min-h-screen h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
       <Header 
         onShowHistory={() => setShowHistoryPanel(true)}
       />
-      
       <div className="flex flex-1 min-h-0">
         <main className="flex-1 flex flex-col min-h-0">
-          <ChatArea 
-            messages={messages}
-            onRegisterIP={handleRegisterIP}
-            onRemix={handleRemix}
-          />
-          <InputBar 
-            value={inputValue}
-            onChange={setInputValue}
-            onSend={handleSendMessage}
-            remixingFrom={remixingFrom}
-            onClearRemix={() => setRemixingFrom(null)}
-          />
+          <div className="flex-1 flex flex-col min-h-0">
+            <ChatArea 
+              messages={messages}
+              onRegisterIP={handleRegisterIP}
+              onRemix={handleRemix}
+            />
+            <InputBar 
+              value={inputValue}
+              onChange={setInputValue}
+              onSend={handleSendMessage}
+              remixingFrom={remixingFrom}
+              onClearRemix={() => setRemixingFrom(null)}
+            />
+          </div>
         </main>
-
         {showHistoryPanel && (
           <HistoryPanel 
             registeredIPs={registeredIPs}
@@ -208,9 +212,7 @@ function App() {
           />
         )}
       </div>
-
       <Footer />
-
       {showRegisterModal && selectedMessageForRegistration && (
         <RegisterIPModal
           message={selectedMessageForRegistration}
@@ -219,6 +221,13 @@ function App() {
             setShowRegisterModal(false);
             setSelectedMessageForRegistration(null);
           }}
+        />
+      )}
+      {notification && (
+        <ChatNotification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
         />
       )}
     </div>
