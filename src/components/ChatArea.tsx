@@ -20,8 +20,8 @@ const ChatArea: React.FC<ChatAreaProps> = ({ messages, onRegisterIP, onRemix }) 
   }, [messages]);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 px-6 py-6 pb-20">
-      <div ref={scrollableRef} className="flex-1 min-h-0 overflow-y-auto max-w-4xl mx-auto w-full space-y-6">
+    <div className="flex-1 flex flex-col min-h-0 px-2 sm:px-6 py-6 pb-20">
+      <div ref={scrollableRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden max-w-4xl mx-auto w-full space-y-6">
         {messages.length === 0 ? (
           <div className="text-center py-20">
             {/* Hero Section */}

@@ -45,7 +45,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onRegisterIP, onRemi
           <div className="relative bg-gradient-to-br from-gray-700 via-gray-600 to-gray-700 text-white rounded-2xl rounded-tr-lg px-6 py-5 shadow-2xl border border-gray-600/50 backdrop-blur-sm">
             <div className="flex items-start space-x-4">
               <div className="flex-1">
-                <p className="text-white/95 leading-relaxed text-base font-normal">{message.content}</p>
+                <p className="text-white/95 leading-relaxed text-base font-normal break-words">{message.content}</p>
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
                   <span className="text-xs text-white/60 flex items-center space-x-1.5">
                     <Clock className="w-3 h-3" />
@@ -80,7 +80,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onRegisterIP, onRemi
               </div>
               <div className="flex-1 min-w-0">
                 <div className="prose prose-gray max-w-none">
-                  <div className="whitespace-pre-wrap text-gray-100 leading-relaxed text-base font-normal tracking-normal">
+                  <div className="whitespace-pre-wrap text-gray-100 leading-relaxed text-base font-normal tracking-normal break-words">
                     {message.content}
                   </div>
                 </div>
