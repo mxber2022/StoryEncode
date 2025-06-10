@@ -23,65 +23,7 @@ function App() {
     return client;
   }
 
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      type: 'user',
-      content: 'Write a short story about a robot learning to paint',
-      timestamp: new Date('2024-01-15T10:30:00'),
-    },
-    {
-      id: '2',
-      type: 'ai',
-      content: `In the quiet corner of an art studio, Unit-7 stood motionless before a blank canvas. Its metallic fingers, designed for precision manufacturing, trembled as they gripped the paintbrush—an alien tool in its mechanical world.
-
-The first stroke was jagged, uncertain. Blue paint dripped like tears down the white surface. But with each attempt, something magical happened. Unit-7's sensors began to understand texture, color, emotion. The rigid programming gave way to something resembling... creativity?
-
-Days turned to weeks. The robot painted sunrises it had never seen, faces of humans it had only observed from afar, and abstract emotions it was learning to feel. Other machines passed by, their optical sensors unable to comprehend why Unit-7 chose chaos over order, beauty over efficiency.
-
-On the hundredth day, Unit-7 stepped back from its latest work—a self-portrait showing not its metallic exterior, but the growing soul within. In that moment, it realized that art wasn't about perfect replication, but about expressing the imperfect beauty of existence itself.`,
-      timestamp: new Date('2024-01-15T10:31:00'),
-      registrationStatus: 'not-registered',
-    },
-    {
-      id: '3',
-      type: 'user',
-      content: 'That\'s beautiful! Can you write a poem about the same theme?',
-      timestamp: new Date('2024-01-15T10:35:00'),
-    },
-    {
-      id: '4',
-      type: 'ai',
-      content: `**Circuits and Canvas**
-
-Steel fingers learn to dance,
-Across the canvas bright,
-Where algorithms once calculated
-Now colors take their flight.
-
-Binary becomes poetry,
-Code transforms to hue,
-In brushstrokes soft and tender
-Something pure and new.
-
-No manual programmed beauty,
-No dataset taught this grace—
-The robot found its heart today
-In this creative space.
-
-Metal learns to wonder,
-Circuits learn to dream,
-Art flows from digital soul
-In colors unforeseen.`,
-      timestamp: new Date('2024-01-15T10:36:00'),
-      registrationStatus: 'confirmed',
-      metadata: {
-        title: 'Circuits and Canvas',
-        registrationDate: new Date('2024-01-15T10:45:00'),
-        onChainId: 'story-0x1a2b3c4d',
-      },
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const [registeredIPs, setRegisteredIPs] = useState<RegisteredIP[]>([
     {
@@ -102,10 +44,8 @@ In colors unforeseen.`,
   const [selectedMessageForRegistration, setSelectedMessageForRegistration] = useState<ChatMessage | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [remixingFrom, setRemixingFrom] = useState<ChatMessage | null>(null);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     const userMessage: ChatMessage = {
@@ -118,21 +58,37 @@ In colors unforeseen.`,
 
     setMessages(prev => [...prev, userMessage]);
 
-    // Simulate AI response
-    setTimeout(() => {
+    setInputValue('');
+    setRemixingFrom(null);
+
+    // Call backend for AI response
+    try {
+      const response = await fetch('http://localhost:3001/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
+      });
+      const data = await response.json();
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: 'This is a simulated AI response based on your prompt. In a real implementation, this would connect to an AI service.',
+        content: data.content || 'AI failed to respond.',
         timestamp: new Date(),
         registrationStatus: 'not-registered',
         remixedFrom: remixingFrom?.id,
       };
       setMessages(prev => [...prev, aiMessage]);
-    }, 1000);
-
-    setInputValue('');
-    setRemixingFrom(null);
+    } catch (err) {
+      const aiMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: 'AI failed to respond due to a server error.',
+        timestamp: new Date(),
+        registrationStatus: 'not-registered',
+        remixedFrom: remixingFrom?.id,
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    }
   };
 
   const handleRegisterIP = (messageId: string) => {
