@@ -17,6 +17,7 @@
     "Buffer": "^0.0.0",
     "lucide-react": "^0.344.0",
     "openai": "^5.2.0",
+    "pinata-web3": "^0.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "viem": "^2.31.0"
