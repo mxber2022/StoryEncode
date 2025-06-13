@@ -34,6 +34,7 @@ const Footer: React.FC = () => {
   </svg>
   Powered by TomoWallet
 </p>
+
             </div>
           </div>
 
