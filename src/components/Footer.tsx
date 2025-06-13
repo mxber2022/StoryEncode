@@ -27,7 +27,13 @@ const Footer: React.FC = () => {
               {/* <h3 className="text-lg font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">
                 StoryMint
               </h3> */}
-              <p className="text-sm text-gray-400">Powered by StoryProtocol</p>
+              <p className="text-sm font-semibold tracking-wide bg-gradient-to-r from-teal-400 bg-red-400 to-red-600 bg-clip-text text-transparent flex items-center gap-1">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="#10b981" />
+    <path d="M8 12l2 2 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+  Powered by TomoWallet
+</p>
             </div>
           </div>
 
