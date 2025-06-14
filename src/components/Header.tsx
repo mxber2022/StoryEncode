@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ onShowHistory }) => {
       className="w-6 h-6 text-white"
     >
       <path
-        d="M70 30C70 20 30 20 30 40C30 60 70 60 70 80C70 90 30 90 30 70"
+        d="M80 50c0 16.568-13.432 30-30 30s-30-13.432-30-30 13.432-30 30-30c8.284 0 15 6.716 15 15s-6.716 15-15 15h15"
         stroke="white"
         strokeWidth="10"
         strokeLinecap="round"
@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onShowHistory }) => {
     </svg>
   </div>
   <div>
-    <h1 className="text-2xl font-semibold text-white">GPT.IP</h1>
+    <h1 className="text-2xl font-extrabold font-mono tracking-widest bg-gradient-to-r from-emerald-300 via-green-400 to-emerald-600 bg-clip-text text-transparent drop-shadow-lg uppercase">GPT.IP</h1>
     {/* <p className="text-sm text-gray-400">AI Content & IP Platform</p> */}
   </div>
 </div>
