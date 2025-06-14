@@ -51,11 +51,11 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onRegisterIP, onRemi
                     <Clock className="w-3 h-3" />
                     <span>{message.timestamp.toLocaleTimeString()}</span>
                   </span>
-                  {message.remixedFrom && (
+                  {/* {message.remixedFrom && (
                     <span className="text-xs text-white/80 bg-white/10 px-2.5 py-1 rounded-full backdrop-blur-sm">
                       Remix
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="bg-white/15 p-2.5 rounded-full flex-shrink-0 backdrop-blur-sm border border-white/20">
@@ -103,14 +103,14 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onRegisterIP, onRemi
                     </button>
                   )}
 
-                  <button
+                  {/* <button
                     onClick={() => onRemix(message)}
                     className="group/btn relative overflow-hidden flex items-center space-x-2.5 px-5 py-2.5 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 text-white rounded-xl font-medium hover:from-orange-500 hover:via-orange-400 hover:to-orange-500 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-orange-500/30 text-sm"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                     <Shuffle className="w-4 h-4 relative z-10" />
                     <span className="relative z-10">Remix</span>
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className="flex items-center space-x-3">
