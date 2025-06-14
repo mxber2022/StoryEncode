@@ -4,7 +4,7 @@ import DKG from 'dkg.js';
 import { BLOCKCHAIN_IDS } from 'dkg.js/constants';
 import 'dotenv/config';
 import fs from 'fs/promises';
-
+import cors from 'cors';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -42,14 +42,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-
+app.use(cors({
+    origin:  '*', // or '*' for all origins (not recommended for production)
+    credentials: true
+  }));
+app.use(bodyParser.json());
 app.post('/publish', async (req, res) => {
     const content = req.body;
     if (!content || typeof content !== 'object') {
         return res.status(400).json({ error: 'Invalid content. Please provide a valid JSON object.' });
     }
     try {
-        console.log('Publishing Knowledge Asset...');
+        console.log('Publishing Knowledge Asset...', content);
         const result = await publishKnowledgeAsset(content);
         //const result = "test";
         // Store in local file
