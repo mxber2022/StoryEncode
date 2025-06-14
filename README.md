@@ -1,6 +1,6 @@
-# StoryMint
+# GPT.IP
 
-**StoryMint** is a premium, user-friendly platform that empowers creators to generate, register, and protect their creative works as intellectual property (IP) on-chain. With a ChatGPT-like conversational interface, seamless IP registration, and a beautiful, modern design, StoryMint makes it effortless to turn your ideas into protected digital assets.
+**GPT.IP** is a premium, user-friendly platform that empowers creators to generate, register, and protect their creative works as intellectual property (IP) on-chain. With a ChatGPT-like conversational interface, seamless IP registration, and a beautiful, modern design, StoryMint makes it effortless to turn your ideas into protected digital assets.
 
 ---
 

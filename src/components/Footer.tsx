@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
             <div className="hidden md:block w-px h-6 bg-gray-700"></div>
             
             <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>© 2024 StoryMint</span>
+              <span>© 2024 GPT.IP</span>
               <a href="#" className="hover:text-gray-200 transition-colors">Privacy</a>
               <a href="#" className="hover:text-gray-200 transition-colors">Terms</a>
             </div>

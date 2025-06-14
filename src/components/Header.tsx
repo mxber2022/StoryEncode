@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onShowHistory }) => {
     </svg>
   </div>
   <div>
-    <h1 className="text-2xl font-semibold text-white">StoryMint</h1>
+    <h1 className="text-2xl font-semibold text-white">GPT.IP</h1>
     {/* <p className="text-sm text-gray-400">AI Content & IP Platform</p> */}
   </div>
 </div>
