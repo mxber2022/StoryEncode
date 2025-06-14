@@ -134,10 +134,17 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onRegisterIP, onRemi
                         Registered on {message.metadata.registrationDate.toLocaleDateString()}
                       </p>
                     </div>
-                    <button className="group/link flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors px-3 py-2 rounded-lg hover:bg-green-500/10">
-                      <ExternalLink className="w-4 h-4 group-hover/link:scale-110 transition-transform" />
-                      <span className="text-sm font-medium">View on-chain</span>
-                    </button>
+                    {message.metadata.onChainId && (
+                      <a
+                        href={`https://aeneid.explorer.story.foundation/ipa/${message.metadata.onChainId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/link flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors px-3 py-2 rounded-lg hover:bg-green-500/10"
+                      >
+                        <ExternalLink className="w-4 h-4 group-hover/link:scale-110 transition-transform" />
+                        <span className="text-sm font-medium">View on-chain</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               )}

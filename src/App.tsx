@@ -157,18 +157,6 @@ function App() {
     const ipfsmetadata = await uploadJSONToIPFS(dataWithAttributes);
     const nftHash = createHash('sha256').update(JSON.stringify(dataWithAttributes)).digest('hex')
 
-    const newIP: RegisteredIP = {
-      id: `story-${Date.now()}`,
-      title: data.title,
-      type: 'story',
-      content: selectedMessageForRegistration.content,
-      registrationDate: new Date(),
-      status: 'confirmed',
-      tags: data.tags,
-      license: data.license,
-      onChainId: `story-0x${Math.random().toString(16).substr(2, 8)}`,
-    };
-    console.log("data", dataWithAttributes);
     const client = await setupStoryClient();
 
     /* 1. ip meta data */
@@ -198,13 +186,6 @@ function App() {
       Upload metadata to IPFS and get the hash
     */
 
-    setRegisteredIPs(prev => [...prev, newIP]);
-
-
-    /* 
-      2. Implemnet IP registration on chain
-    */
-
     const response = await client.ipAsset.mintAndRegisterIp({
       spgNftContract: '0xc32A8a0FF3beDDDa58393d022aF433e78739FAbc',
       ipMetadata: {
@@ -219,7 +200,19 @@ function App() {
       `Root IPA created at tx hash ${response.txHash}, IPA ID: ${response.ipId}`
     );
 
-
+    // Use the actual IPA ID for onChainId
+    const newIP: RegisteredIP = {
+      id: `story-${Date.now()}`,
+      title: data.title,
+      type: 'story',
+      content: selectedMessageForRegistration.content,
+      registrationDate: new Date(),
+      status: 'confirmed',
+      tags: data.tags,
+      license: data.license,
+      onChainId: response.ipId || '',
+    };
+    setRegisteredIPs(prev => [...prev, newIP]);
 
     // Update message status to confirmed
     setMessages(prev => 
@@ -231,66 +224,66 @@ function App() {
               metadata: {
                 title: data.title,
                 registrationDate: new Date(),
-                onChainId: newIP.onChainId,
+                onChainId: response.ipId || '',
               }
             }
           : msg
       )
     );
 
-  setShowRegisterModal(false);
-  setSelectedMessageForRegistration(null);
-};
+    setShowRegisterModal(false);
+    setSelectedMessageForRegistration(null);
+  };
 
-return (
-  <div className="min-h-screen h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
-    <Header 
-      onShowHistory={() => setShowHistoryPanel(true)}
-    />
-    <div className="flex flex-1 min-h-0">
-      <main className="flex-1 flex flex-col min-h-0">
-        <div className="flex-1 flex flex-col min-h-0">
-          <ChatArea 
-            messages={messages}
-            onRegisterIP={handleRegisterIP}
-            onRemix={handleRemix}
+  return (
+    <div className="min-h-screen h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white flex flex-col">
+      <Header 
+        onShowHistory={() => setShowHistoryPanel(true)}
+      />
+      <div className="flex flex-1 min-h-0">
+        <main className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col min-h-0">
+            <ChatArea 
+              messages={messages}
+              onRegisterIP={handleRegisterIP}
+              onRemix={handleRemix}
+            />
+            <InputBar 
+              value={inputValue}
+              onChange={setInputValue}
+              onSend={handleSendMessage}
+              remixingFrom={remixingFrom}
+              onClearRemix={() => setRemixingFrom(null)}
+            />
+          </div>
+        </main>
+        {showHistoryPanel && (
+          <HistoryPanel 
+            registeredIPs={registeredIPs}
+            onClose={() => setShowHistoryPanel(false)}
           />
-          <InputBar 
-            value={inputValue}
-            onChange={setInputValue}
-            onSend={handleSendMessage}
-            remixingFrom={remixingFrom}
-            onClearRemix={() => setRemixingFrom(null)}
-          />
-        </div>
-      </main>
-      {showHistoryPanel && (
-        <HistoryPanel 
-          registeredIPs={registeredIPs}
-          onClose={() => setShowHistoryPanel(false)}
+        )}
+      </div>
+      <Footer />
+      {showRegisterModal && selectedMessageForRegistration && (
+        <RegisterIPModal
+          message={selectedMessageForRegistration}
+          onSubmit={handleRegisterSubmit}
+          onClose={() => {
+            setShowRegisterModal(false);
+            setSelectedMessageForRegistration(null);
+          }}
+        />
+      )}
+      {notification && (
+        <ChatNotification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
         />
       )}
     </div>
-    <Footer />
-    {showRegisterModal && selectedMessageForRegistration && (
-      <RegisterIPModal
-        message={selectedMessageForRegistration}
-        onSubmit={handleRegisterSubmit}
-        onClose={() => {
-          setShowRegisterModal(false);
-          setSelectedMessageForRegistration(null);
-        }}
-      />
-    )}
-    {notification && (
-      <ChatNotification
-        message={notification.message}
-        type={notification.type}
-        onClose={() => setNotification(null)}
-      />
-    )}
-  </div>
-);
+  );
 }
 
 export default App;
